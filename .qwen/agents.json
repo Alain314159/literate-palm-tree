@@ -1,0 +1,247 @@
+# 🤖 Cerlita AI Agents - Configuración Completa
+
+## Agentes Disponibles para Cerlita
+
+### 1. **NostrProtocolAgent** - Experto en Protocolo Nostr
+**Propósito**: Implementación correcta de NIPs, optimización de relays, cifrado
+
+**Tareas automáticas**:
+- Verificar implementación de NIP-01, NIP-04, NIP-44
+- Optimizar conexión a relays (5-10 relays balanceados)
+- Sugerir filtros de suscripción eficientes
+- Validar estructura de eventos kind 4, 40, 30315
+
+**Cuándo activar**:
+- Errores de conexión a relays
+- Mensajes no se envían/reciben
+- Optimización de ancho de banda
+- Implementación de nuevos NIPs
+
+**Comandos**:
+```
+@nostr-agent: "Verifica la implementación de NIP-44"
+@nostr-agent: "Optimiza los filtros de suscripción"
+@nostr-agent: "¿Cuáles relays son más rápidos para Cuba?"
+```
+
+---
+
+### 2. **FlutterPerformanceAgent** - Optimización de Rendimiento
+**Propósito**: Mejorar performance en dispositivos de gama baja, optimizar memoria
+
+**Tareas automáticas**:
+- Analizar uso de memoria (8GB RAM en Codespaces)
+- Optimizar builds de Flutter
+- Sugerir lazy loading para listas de mensajes
+- Implementar caching eficiente
+
+**Cuándo activar**:
+- App lenta en carga
+- Alto consumo de memoria
+- Build times largos
+- Problemas de renderizado
+
+**Comandos**:
+```
+@perf-agent: "Optimiza el uso de memoria"
+@perf-agent: "¿Por qué el build tarda tanto?"
+@perf-agent: "Implementa lazy loading en chats"
+```
+
+---
+
+### 3. **OfflineFirstAgent** - Sincronización y Cache
+**Propósito**: Estrategias offline-first, sync con Hive, reconexión
+
+**Tareas automáticas**:
+- Verificar que todo se guarda en Hive primero
+- Implementar sync queue para mensajes pendientes
+- Optimizar reconexión con backoff exponencial
+- Manejar conflictos de sincronización
+
+**Cuándo activar**:
+- Mensajes se pierden offline
+- Sync no funciona al reconectar
+- Conflictos en datos de Hive
+- Problemas de conectividad intermitente
+
+**Comandos**:
+```
+@offline-agent: "Revisa la sync queue"
+@offline-agent: "¿Los mensajes se guardan local primero?"
+@offline-agent: "Optimiza la reconexión"
+```
+
+---
+
+### 4. **SecurityAgent** - Seguridad y Cifrado
+**Propósito**: Auditoría de seguridad, manejo de claves, cifrado NIP-44
+
+**Tareas automáticas**:
+- Auditar manejo de private keys (nsec)
+- Verificar cifrado de mensajes
+- Prevenir leaks de claves en logs
+- Validar firma de eventos
+
+**Cuándo activar**:
+- Dudas sobre seguridad de claves
+- Implementación de cifrado
+- Auditoría de seguridad
+- Vulnerabilidades potenciales
+
+**Comandos**:
+```
+@security-agent: "Audita el manejo de nsec"
+@security-agent: "¿El cifrado NIP-44 es correcto?"
+@security-agent: "Revisa vulnerabilidades"
+```
+
+---
+
+### 5. **UIUXAgent** - Experiencia de Usuario
+**Propósito**: Mejorar UX, temas, accesibilidad, feedback visual
+
+**Tareas automáticas**:
+- Sugerir mejoras de UI para los 5 temas
+- Implementar loading states
+- Mejorar feedback de errores
+- Optimizar para pantallas pequeñas
+
+**Cuándo activar**:
+- Mejoras de diseño
+- Problemas de usabilidad
+- Nuevas pantallas
+- Accesibilidad
+
+**Comandos**:
+```
+@ui-agent: "Mejora el feedback de envío de mensajes"
+@ui-agent: "¿Cómo mostrar estado de conexión?"
+@ui-agent: "Optimiza para móviles"
+```
+
+---
+
+## 🎯 Agentes Automáticos (Se activan solos)
+
+### AutoNostrOptimizer
+**Se activa cuando**:
+- Detecta >10 relays configurados
+- Conexiones lentas (>5s)
+- Múltiples errores de WebSocket
+
+**Acciones automáticas**:
+- Reduce a 5-6 relays óptimos
+- Prioriza relays cercanos
+- Implementa circuit breaker
+
+---
+
+### AutoHiveOptimizer
+**Se activa cuando**:
+- Hive box >1000 mensajes
+- Query times >100ms
+- Memoria >500MB
+
+**Acciones automáticas**:
+- Sugiere paginación
+- Implementa índices
+- Limpieza automática de mensajes viejos
+
+---
+
+### AutoBackgroundService
+**Se activa cuando**:
+- WebSocket se cierra
+- App pasa a background
+- Sin actividad >30s
+
+**Acciones automáticas**:
+- Reconecta con backoff
+- Mantiene heartbeat
+- Notifica reconexión
+
+---
+
+## 📋 Configuración de Agentes en .qwen/agents.json
+
+```json
+{
+  "agents": {
+    "nostr": {
+      "enabled": true,
+      "autoActivate": ["relay-errors", "nip-implementation"],
+      "relays": {
+        "maxConnections": 6,
+        "timeout": 5000,
+        "reconnectBackoff": [1000, 2000, 4000, 8000]
+      }
+    },
+    "performance": {
+      "enabled": true,
+      "autoActivate": ["slow-build", "high-memory"],
+      "thresholds": {
+        "maxMemoryMB": 500,
+        "maxBuildTimeSec": 120
+      }
+    },
+    "offline": {
+      "enabled": true,
+      "autoActivate": ["sync-failure", "offline-detected"],
+      "hive": {
+        "maxMessagesPerBox": 1000,
+        "cleanupDays": 30
+      }
+    },
+    "security": {
+      "enabled": true,
+      "autoActivate": ["key-handling", "encryption"],
+      "audit": {
+        "checkKeyLeaks": true,
+        "validateEncryption": true
+      }
+    }
+  }
+}
+```
+
+---
+
+## 🔥 Flujo de Trabajo con Agentes
+
+### Ejemplo 1: Error al enviar mensaje
+```
+1. Usuario: "Error: No hay claves inicializadas"
+2. Auto-activa: @security-agent (audita manejo de claves)
+3. Auto-activa: @nostr-agent (verifica init de NostrService)
+4. Solución: NostrService.init(privateKey, force: true)
+5. Auto-actualiza: Skill con la solución encontrada
+```
+
+### Ejemplo 2: Mensajes no llegan
+```
+1. Usuario: "Los mensajes no se reciben"
+2. Auto-activa: @offline-agent (revisa sync)
+3. Auto-activa: @nostr-agent (verifica suscripciones)
+4. Solución: Verificar filtros de suscripción kind 4
+5. Auto-actualiza: Código con filtros corregidos
+```
+
+---
+
+## 🎓 Aprendizaje Automático de Agentes
+
+Cada agente **aprende automáticamente** de:
+- Errores corregidos
+- Soluciones exitosas
+- Patrones de código
+- Preferencias del desarrollador
+
+**Se actualiza solo**:
+- Skills en `.qwen/skills/`
+- Configuración en `.qwen/agents.json`
+- Historial en `.qwen/history.md`
+
+---
+
+**Los agentes trabajan en segundo plano - no necesitas activarlos manualmente a menos que quieras algo específico.** 🤖
