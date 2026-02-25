@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/services/hive_service.dart';
 import 'core/services/app_state.dart';
 import 'core/utils/connectivity_utils.dart';
@@ -10,16 +11,21 @@ import 'features/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Hive
-  await initHive();
-  
-  // Initialize AppState
-  await AppState.instance.init();
-  
+
+  try {
+    // Initialize Hive
+    await Hive.initFlutter();
+    await initHive();
+
+    // Initialize AppState
+    await AppState.instance.init();
+  } catch (e) {
+    print('Error initializing: $e');
+  }
+
   // Start connectivity listener
   ConnectivityUtils().startListening();
-  
+
   runApp(
     const ProviderScope(
       child: CerlitaApp(),

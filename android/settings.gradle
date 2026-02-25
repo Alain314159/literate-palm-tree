@@ -1,0 +1,9 @@
+rootProject.name = 'cerlita'
+include ':app'
+
+def localPropertiesFile = new File(rootDir, "local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+if (localProperties.containsKey('flutter.sdk')) {
+    apply from: "${localProperties.getProperty('flutter.sdk')}/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+}
