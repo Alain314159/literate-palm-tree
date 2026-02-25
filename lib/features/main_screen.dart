@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/app_state.dart';
 import 'chat/presentation/screens/chats_screen.dart';
-import 'states/presentation/screens/states_screen.dart';
-import 'calls/presentation/screens/calls_screen.dart';
+import 'contacts/presentation/screens/contacts_screen.dart';
 import 'settings/presentation/screens/settings_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
@@ -18,8 +17,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   final List<Widget> _screens = [
     const ChatsScreen(),
-    const StatesScreen(),
-    const CallsScreen(),
+    const ContactsScreen(),
     const SettingsScreen(),
   ];
 
@@ -47,14 +45,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             label: 'Chats',
           ),
           NavigationDestination(
-            icon: Icon(Icons.circle_outlined),
-            selectedIcon: Icon(Icons.circle),
-            label: 'Estados',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.call_outlined),
-            selectedIcon: Icon(Icons.call),
-            label: 'Llamadas',
+            icon: Icon(Icons.people_outline),
+            selectedIcon: Icon(Icons.people),
+            label: 'Contactos',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),

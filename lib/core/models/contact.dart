@@ -46,6 +46,9 @@ class Contact extends HiveObject {
   @HiveField(13)
   bool hasUnreadMention; // Si tiene mención no leída
 
+  @HiveField(14)
+  DateTime createdAt; // Fecha de creación
+
   Contact({
     required this.npub,
     this.customName,
@@ -61,6 +64,7 @@ class Contact extends HiveObject {
     this.isFavorite = false,
     this.lastMessagePreview,
     this.hasUnreadMention = false,
+    required this.createdAt,
   });
 
   Contact copyWith({
@@ -78,6 +82,7 @@ class Contact extends HiveObject {
     bool? isFavorite,
     String? lastMessagePreview,
     bool? hasUnreadMention,
+    DateTime? createdAt,
   }) {
     return Contact(
       npub: npub ?? this.npub,
@@ -94,6 +99,7 @@ class Contact extends HiveObject {
       isFavorite: isFavorite ?? this.isFavorite,
       lastMessagePreview: lastMessagePreview ?? this.lastMessagePreview,
       hasUnreadMention: hasUnreadMention ?? this.hasUnreadMention,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -140,6 +146,9 @@ class Contact extends HiveObject {
       isFavorite: json['isFavorite'] as bool? ?? false,
       lastMessagePreview: json['lastMessagePreview'] as String?,
       hasUnreadMention: json['hasUnreadMention'] as bool? ?? false,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(),
     );
   }
 }
