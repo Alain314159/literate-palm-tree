@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/services/hive_service.dart';
 import 'core/services/app_state.dart';
+import 'core/services/background_service.dart';
+import 'core/services/nostr_service.dart';
 import 'core/utils/connectivity_utils.dart';
 import 'features/theme/theme_data.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
@@ -19,6 +21,19 @@ void main() async {
 
     // Initialize AppState
     await AppState.instance.init();
+    
+    // Initialize background service for notifications
+    await BackgroundService().init();
+    
+    // Start background listener
+    BackgroundService().startBackgroundListener();
+    
+    // Setup message callback
+    NostrService().setOnNewMessage((message) {
+      if (!message.isOutgoing) {
+        BackgroundService().onNewMessage(message);
+      }
+    });
   } catch (e) {
     print('Error initializing: $e');
   }
