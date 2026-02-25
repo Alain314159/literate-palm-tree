@@ -29,7 +29,6 @@ Future<void> initHive() async {
   Hive.registerAdapter(SettingsAdapter());
   Hive.registerAdapter(MediaAdapter());
   Hive.registerAdapter(StateAdapter());
-  // Enum adapters se generan automáticamente con hive_generator
 
   // Open boxes
   await Hive.openBox<Message>(BoxNames.messages);
