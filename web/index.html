@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <base href="$FLUTTER_BASE_HREF">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -18,7 +18,6 @@
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <title>Cerlita</title>
-  <link rel="manifest" href="manifest.json">
 
   <style>
     body {
@@ -62,18 +61,50 @@
       border-radius: 8px;
       margin-top: 20px;
       display: none;
+      max-width: 400px;
+    }
+    .error strong {
+      display: block;
+      margin-bottom: 10px;
     }
   </style>
 
+  <!-- Load Flutter JS first -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+  <div class="loading">
+    <h1>🐷 CERLITA 🐨</h1>
+    <p>Cargando aplicación...</p>
+    <div class="spinner"></div>
+    <div id="error-message" class="error"></div>
+    <p style="font-size: 0.8em; opacity: 0.7; margin-top: 30px;">
+      Si la app no carga después de 30 segundos, recarga la página (F5)
+    </p>
+  </div>
+
   <script>
+    // Wait for flutter.js to load
     window.addEventListener('load', function(ev) {
       const errorDiv = document.getElementById('error-message');
       
+      // Check if _flutter is available
+      if (!window._flutter || !window._flutter.loader) {
+        console.error('Flutter loader not available');
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorDiv.innerHTML = '<strong>Error:</strong> Flutter no se cargó correctamente. Intenta recargar la página.';
+        }
+        return;
+      }
+      
       try {
-        _flutter.loader.load({
+        window._flutter.loader.load({
           onEntrypointLoaded: async function(engineInitializer) {
             try {
+              console.log('Initializing Flutter engine...');
               const appRunner = await engineInitializer.initializeEngine();
+              console.log('Running Flutter app...');
               await appRunner.runApp();
             } catch (e) {
               console.error('Error running app:', e);
@@ -93,16 +124,5 @@
       }
     });
   </script>
-</head>
-<body>
-  <div class="loading">
-    <h1>🐷 CERLITA 🐨</h1>
-    <p>Cargando aplicación...</p>
-    <div class="spinner"></div>
-    <div id="error-message" class="error"></div>
-    <p style="font-size: 0.8em; opacity: 0.7; margin-top: 30px;">
-      Si la app no carga después de 30 segundos, recarga la página (F5)
-    </p>
-  </div>
 </body>
 </html>
