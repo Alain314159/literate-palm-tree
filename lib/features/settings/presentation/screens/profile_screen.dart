@@ -19,6 +19,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool _isEditing = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Cargar datos actuales (placeholder - luego cargar de Nostr)
+    _nameController.text = ''; // TODO: Cargar desde perfil Nostr
+    _aboutController.text = '';
+    _nip05Controller.text = '';
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _aboutController.dispose();
@@ -89,9 +98,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               icon: const Icon(Icons.edit),
               onPressed: () {
                 setState(() => _isEditing = true);
-                _nameController.text = ''; // TODO: Cargar desde perfil
-                _aboutController.text = '';
-                _nip05Controller.text = '';
+                // Los valores ya están en los controladores desde initState
               },
             ),
         ],

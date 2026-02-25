@@ -243,12 +243,12 @@ class CerlitaTheme {
   static ThemeData _buildKoalitaTheme() {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primaryColor: koalitaPrimary,
       primaryColorLight: koalitaPrimary,
       primaryColorDark: koalitaPrimaryVariant,
       scaffoldBackgroundColor: koalitaBackground,
-      colorScheme: const ColorScheme.light(
+      colorScheme: const ColorScheme.dark(
         primary: koalitaPrimary,
         secondary: koalitaPrimaryVariant,
         surface: koalitaSurface,
@@ -256,11 +256,11 @@ class CerlitaTheme {
         onPrimary: koalitaOnPrimary,
         onSecondary: koalitaOnPrimary,
         onSurface: koalitaOnSurface,
-        onError: koalitaOnPrimary,
+        onError: koalitaOnSurface,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: koalitaPrimary,
-        foregroundColor: koalitaOnPrimary,
+        backgroundColor: koalitaSurface,
+        foregroundColor: koalitaOnSurface,
         elevation: 0,
         centerTitle: false,
       ),
@@ -295,12 +295,12 @@ class CerlitaTheme {
   static ThemeData _buildCerditaKoalitaTheme() {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primaryColor: cerditaKoalitaPrimary,
       primaryColorLight: cerditaKoalitaPrimary,
       primaryColorDark: cerditaKoalitaPrimaryVariant,
       scaffoldBackgroundColor: cerditaKoalitaBackground,
-      colorScheme: const ColorScheme.light(
+      colorScheme: const ColorScheme.dark(
         primary: cerditaKoalitaPrimary,
         secondary: cerditaKoalitaPrimaryVariant,
         surface: cerditaKoalitaSurface,
@@ -310,8 +310,8 @@ class CerlitaTheme {
         onSurface: cerditaKoalitaOnSurface,
         onError: cerditaKoalitaOnSurface,
       ),
-      appBarTheme: AppBarTheme(
-        backgroundColor: cerditaKoalitaPrimary,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: cerditaKoalitaSurface,
         foregroundColor: cerditaKoalitaOnPrimary,
         elevation: 0,
         centerTitle: true,
