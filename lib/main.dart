@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/services/hive_service.dart';
+import 'core/services/app_state.dart';
+import 'core/utils/connectivity_utils.dart';
+import 'features/theme/theme_data.dart';
+import 'features/auth/presentation/screens/splash_screen.dart';
+import 'features/auth/presentation/screens/auth_screen.dart';
+import 'features/main_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Hive
+  await initHive();
+  
+  // Initialize AppState
+  await AppState.instance.init();
+  
+  // Start connectivity listener
+  ConnectivityUtils().startListening();
+  
+  runApp(
+    const ProviderScope(
+      child: CerlitaApp(),
+    ),
+  );
+}
+
+class CerlitaApp extends ConsumerWidget {
+  const CerlitaApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appState = ref.watch(appStateProvider);
+    final themeType = appState.theme;
+    
+    return MaterialApp(
+      title: 'Cerlita',
+      debugShowCheckedModeBanner: false,
+      theme: CerlitaTheme.getTheme(themeType),
+      home: _buildHome(appState),
+    );
+  }
+
+  Widget _buildHome(AppState appState) {
+    if (appState.isInitializing) {
+      return const SplashScreen();
+    }
+    
+    if (!appState.isAuthenticated) {
+      return const AuthScreen();
+    }
+    
+    return const MainScreen();
+  }
+}

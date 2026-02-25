@@ -1,0 +1,78 @@
+name: cerlita
+description: "Cerlita - Mensajería descentralizada con Nostr, optimizada para ETECSA"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Nostr protocol - usando versión compatible
+  dart_nostr: ^8.0.3
+  
+  # State management - Riverpod 2.x
+  flutter_riverpod: ^2.5.1
+  
+  # Local database - Hive (offline-first)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # WebRTC para llamadas voz/video
+  flutter_webrtc: ^0.13.0
+  
+  # Audio recording y playback
+  record: ^5.0.4
+  just_audio: ^0.9.38
+  
+  # Image picking y compresión
+  image_picker: ^1.0.7
+  flutter_image_compress: ^2.3.0
+  
+  # Permisos
+  permission_handler: ^11.3.1
+  
+  # Conectividad
+  connectivity_plus: ^6.0.3
+  
+  # Paths
+  path_provider: ^2.1.4
+  
+  # URL launcher
+  url_launcher: ^6.3.0
+  
+  # Internacionalización
+  intl: ^0.19.0
+  
+  # Emoji picker para stickers
+  emoji_picker_flutter: ^1.6.4
+  
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  # Hive adapter generator
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/icons/
+    - assets/images/
+    
+  # Fonts - comentar hasta que se agreguen los archivos reales
+  # fonts:
+  #   - family: Nunito
+  #     fonts:
+  #       - asset: assets/fonts/Nunito-Regular.ttf
+  #       - asset: assets/fonts/Nunito-Bold.ttf
+  #         weight: 700
+  #       - asset: assets/fonts/Nunito-SemiBold.ttf
+  #         weight: 600

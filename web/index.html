@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Cerlita - Mensajería descentralizada con Nostr">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Cerlita">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Cerlita</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.load({
+        onEntrypointLoaded: async function(engineInitializer) {
+          const appRunner = await engineInitializer.initializeEngine();
+          await appRunner.runApp();
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div style="display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #FFD1DC; font-family: sans-serif;">
+    <div style="text-align: center;">
+      <h1 style="color: #FF69B4; margin-bottom: 10px;">🐷 Cerlita 🐨</h1>
+      <p style="color: #666;">Cargando aplicación...</p>
+      <p style="color: #999; font-size: 12px;">Si la app no carga, asegúrate de tener JavaScript habilitado</p>
+    </div>
+  </div>
+</body>
+</html>
