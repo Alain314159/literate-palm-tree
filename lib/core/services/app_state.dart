@@ -56,6 +56,11 @@ class AppState extends ChangeNotifier {
       if (keysBox.isNotEmpty) {
         _currentUserKeys = keysBox.getAt(0);
         _isAuthenticated = _currentUserKeys != null;
+        
+        // Initialize Nostr with loaded keys
+        if (_currentUserKeys != null) {
+          await NostrService().init(privateKey: _currentUserKeys!.privateKey, force: true);
+        }
       }
 
       // Load settings
@@ -65,11 +70,6 @@ class AppState extends ChangeNotifier {
         // Create default settings
         _settings = Settings(userNpub: _currentUserKeys!.npub);
         await settingsBox.put(0, _settings!);
-      }
-
-      // Initialize Nostr if authenticated
-      if (_isAuthenticated && _currentUserKeys != null) {
-        await NostrService().init(privateKey: _currentUserKeys!.privateKey);
       }
     } catch (e) {
       print('Error initializing AppState: $e');
@@ -86,15 +86,15 @@ class AppState extends ChangeNotifier {
     
     // Save to Hive
     await keysBox.put(0, keys);
-
+    
     // Create default settings if not exists
     if (_settings == null) {
       _settings = Settings(userNpub: keys.npub);
       await settingsBox.put(0, _settings!);
     }
     
-    // Initialize Nostr
-    await NostrService().init(privateKey: keys.privateKey);
+    // CRITICAL: Initialize NostrService with the new keys (force re-init)
+    await NostrService().init(privateKey: keys.privateKey, force: true);
     
     notifyListeners();
   }

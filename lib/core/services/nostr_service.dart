@@ -43,8 +43,16 @@ class NostrService {
   String? get npub => _npub;
 
   /// Initialize con clave privada
-  Future<void> init({String? privateKey}) async {
-    if (_isInitialized) return;
+  Future<void> init({String? privateKey, bool force = false}) async {
+    // Allow re-initialization if force is true or if privateKey is provided and different
+    if (_isInitialized && !force && _privateKey == privateKey) {
+      return;
+    }
+
+    // If reinitializing with new key, close existing connections
+    if (_isInitialized && force) {
+      await disconnect();
+    }
 
     if (privateKey != null && privateKey.length == 64) {
       _privateKey = privateKey;
@@ -54,9 +62,11 @@ class NostrService {
 
     // Conectar a relays
     await _connectToAllRelays();
-    
+
     _isInitialized = true;
     _isConnected = true;
+    
+    print('✅ NostrService initialized for ${_npub ?? "anonymous"}');
   }
 
   /// Generate new key pair (criptográficamente seguro)
