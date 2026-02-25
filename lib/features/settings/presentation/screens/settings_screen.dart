@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/services/app_state.dart';
 import '../../../../core/models/settings.dart';
 import '../../../theme/theme_data.dart';
+import 'profile_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -40,12 +42,31 @@ class SettingsScreen extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      // TODO: Copiar npub
-                    },
-                    icon: const Icon(Icons.copy),
-                    label: const Text('Copiar npub'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: appState.userNpub));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Npub copiado al portapapeles')),
+                          );
+                        },
+                        icon: const Icon(Icons.copy),
+                        label: const Text('Copiar npub'),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                          );
+                        },
+                        icon: const Icon(Icons.edit),
+                        label: const Text('Editar Perfil'),
+                      ),
+                    ],
                   ),
                 ],
               ),

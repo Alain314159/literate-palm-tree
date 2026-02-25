@@ -129,8 +129,14 @@ class ChatsScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navegar a agregar contacto
+          // Navegar a la pestaña de contactos
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ve a la pestaña "Contactos" para agregar contactos'),
+            ),
+          );
         },
+        tooltip: 'Iniciar chat',
         child: const Icon(Icons.chat),
       ),
     );
