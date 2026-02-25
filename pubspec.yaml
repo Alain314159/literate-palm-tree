@@ -36,7 +36,8 @@ dependencies:
   
   # Conectividad
   connectivity_plus: ^6.0.3
-  
+  web_socket_channel: ^2.4.0
+
   # Paths
   path_provider: ^2.1.4
   

@@ -20,18 +20,32 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   
   List<Message> _messages = [];
   bool _isLoading = false;
+  StreamSubscription? _messageSubscription;
 
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _setupMessageListener();
   }
 
   @override
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
+    _messageSubscription?.cancel();
     super.dispose();
+  }
+
+  void _setupMessageListener() {
+    // Escuchar mensajes entrantes en tiempo real
+    NostrService().setOnNewMessage((message) {
+      if (message.chatId == widget.npub) {
+        setState(() {
+          _messages.insert(0, message);
+        });
+      }
+    });
   }
 
   Future<void> _loadMessages() async {
@@ -53,30 +67,30 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
 
     _messageController.clear();
 
-    // Crear mensaje local
-    final message = Message(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      chatId: widget.npub,
-      senderNpub: widget.npub,
-      type: MessageType.text,
-      content: content,
-      timestamp: DateTime.now(),
-      status: MessageStatus.sent,
-      isOutgoing: true,
-      kind: 4,
-    );
+    try {
+      // Enviar via Nostr
+      final messageId = await NostrService().sendMessage(
+        recipientNpub: widget.npub,
+        content: content,
+      );
 
-    // Guardar localmente
-    await messagesBox.put(message.id, message);
-    setState(() {
-      _messages.insert(0, message);
-    });
-
-    // TODO: Enviar via Nostr
-    // await NostrService().sendDirectMessage(
-    //   recipientPublicKey: NostrService().decodeNpub(widget.npub),
-    //   content: content,
-    // );
+      // Cargar mensajes actualizados
+      await _loadMessages();
+      
+      // Scroll al final
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error enviando mensaje: $e')),
+      );
+    }
   }
 
   @override
